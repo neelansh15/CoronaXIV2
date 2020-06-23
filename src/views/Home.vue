@@ -7,9 +7,15 @@
           <span class="material-icon">
             <img src="@/assets/Images/search-white-18dp.svg" alt="Search">
           </span>
-          <input type="text">
+          <form @submit.prevent="">
+            <input type="text">
+          </form>
         </div>
       </div>
+
+      <footer>
+        CoronaXiv is an ElasticSearch-powered AI Search Engine that indexes the thousands of research papers that have piled up in response to the Corona Virus pandemic and illustrates various visualizations.
+      </footer>
     </section>
   </div>
 </template>

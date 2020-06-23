@@ -24,6 +24,8 @@ section{
     align-items: center;
     color: $white;
 
+    position: relative;
+
     .box{
         width: 80vw;
         padding: 2em 1em;
@@ -57,22 +59,36 @@ section{
                     height: 1.5em;
                 }
             }
-
-            input{
-                width: 70%;
-                border: none;
-                border-radius: $border-radius;
-                background-color: $dark;
-                padding: 1em;
-
-                &:focus{
-                    outline: 1px solid white !important;
+            
+            form{
+                width: 100%;
+                input{
+                    width: 90%;
+                    border: none;
                     border-radius: $border-radius;
+                    background-color: $dark;
+                    color: $white;
+                    padding: 1em;
+                    font-family: 'Nunito';
+                    font-weight: 700;
+                    letter-spacing: 0.05em;
+
+                    &:focus{
+                        outline: none !important;
+                    }
                 }
             }
 
         }
     }
 
+    footer{
+        background-color: $lightdark;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+
+        padding: 2em;
+    }
 
 }
