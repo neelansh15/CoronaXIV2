@@ -7,8 +7,8 @@
           <span class="material-icon">
             <img src="@/assets/Images/search-white-18dp.svg" alt="Search">
           </span>
-          <form @submit.prevent="">
-            <input type="text">
+          <form @submit.prevent="search()">
+            <input type="text" v-model="searchString">
           </form>
         </div>
       </div>
@@ -22,7 +22,20 @@
 
 <script>
 export default {
-
+  name: 'Home',
+  data:() => ({
+    searchString: ''
+  }),
+  methods:{
+    search(){
+      this.$router.push({
+        path: 'search',
+        query: {
+          q: this.searchString
+        }
+      })
+    }
+  }
 }
 </script>
 
