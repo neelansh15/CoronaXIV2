@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Open+Sans:wght@300;400;700;800&display=swap');
+
+//Variables
+$dark: #282a2c;
+$lightdark: lighten($dark, 5);
+$white: whitesmoke;
+$border-radius: 20px;
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: 'Open Sans';
+    background-color: $dark;
+}
+
+section{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: $white;
+
+    .box{
+        width: 80vw;
+        padding: 2em 1em;
+        background-color: $lightdark;
+        border-radius: $border-radius;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .logo{
+            font-size: 3em;
+            margin: 0.5em 0 1em;
+        }
+
+        .searchBox{
+            width: 100%;
+            display: flex;
+            align-items: center;
+
+            border-radius: $border-radius;
+            background-color: $dark;
+
+            .material-icon{
+                width: 20%;
+                height: 2.65em;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                img{
+                    height: 1.5em;
+                }
+            }
+
+            input{
+                width: 70%;
+                border: none;
+                border-radius: $border-radius;
+                background-color: $dark;
+                padding: 1em;
+
+                &:focus{
+                    outline: 1px solid white !important;
+                    border-radius: $border-radius;
+                }
+            }
+
+        }
+    }
+
+
+}
