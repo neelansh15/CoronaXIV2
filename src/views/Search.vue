@@ -11,7 +11,7 @@
 
     <div class="container">
       <h2>{{ (loading) ? "Loading" : "" }}</h2>
-      <div class="cards">
+      <div class="cards" v-if="!loading">
           <Card v-for="paper in papers" :paper="paper" :key="paper._source.title + Math.random()" />
       </div>
     </div>

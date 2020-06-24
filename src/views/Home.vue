@@ -8,12 +8,13 @@
             <img src="@/assets/Images/search-white-18dp.svg" alt="Search">
           </span>
           <form @submit.prevent="search()">
-            <input type="text" v-model="searchString" required>
+            <input type="text" v-model="searchString" @focus="footer = false" @blur="footer = true" required>
           </form>
         </div>
       </div>
 
-      <footer>
+      <!-- Removing footer on input focus for mobile devices -->
+      <footer v-if="footer">
         CoronaXiv is an ElasticSearch-powered AI Search Engine that indexes the thousands of research papers that have piled up in response to the Corona Virus pandemic and illustrates various visualizations.
       </footer>
     </section>
@@ -25,7 +26,8 @@ export default {
   name: 'Home',
   data: function(){
     return{
-      searchString: ''
+      searchString: '',
+      footer: true
     }
   },
   methods:{

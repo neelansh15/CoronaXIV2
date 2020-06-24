@@ -7,6 +7,12 @@
             {{ paper._source.excerpt }}
           </p>
       </div>
+      <div class="card-footer">
+          <a :href="finalUrl" target="_blank">
+            <button class="button">Visit</button>
+          </a>
+          <span class="date">{{ paper._source.publish_time }}</span>
+      </div>
   </div>
 </template>
 
@@ -18,6 +24,13 @@ export default {
             type: Object,
             required: true
         }
+    },
+    computed:{
+        finalUrl(){
+            let url = this.paper._source.url
+            let semicolonIndex = url.indexOf(";")
+            return url.slice(0, semicolonIndex)
+        }
     }
 }
 </script>
@@ -28,6 +41,8 @@ $dark: #282a2c;
 $lightdark: lighten($dark, 5);
 $white: whitesmoke;
 $border-radius: 20px;
+
+$primary: #9161cf;
 
 .card{
     background-color: $lightdark;
@@ -41,10 +56,34 @@ $border-radius: 20px;
     }
     .card-subtitle{
         font-size: 1em;
-        color: #9161cf;
+        color: $primary;
     }
     .content{
         margin-top: 1em;
+    }
+    .card-footer{
+        margin-top: 1.5em;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .button{
+            border-radius: $border-radius;
+            padding: 0.8em 1.5em;
+            background: $primary;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+
+            &:focus{
+                outline: none !important;
+            }
+        }
+
+        .date{
+            color: lighten($primary, 10);
+            font-weight: bold;
+        }
     }
 }
 </style>
