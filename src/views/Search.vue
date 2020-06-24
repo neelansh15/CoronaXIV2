@@ -4,9 +4,13 @@
       <span class="icon">
         <img src="@/assets/Images/menu-white-18dp.svg" alt="Menu">
       </span>
-      <form @submit.prevent="" class="navSearch">
-        <input type="text">
+      <form @submit.prevent="search()" class="navSearch">
+        <input type="text" v-model="searchString">
       </form>
+    </div>
+
+    <div class="container">
+      <h1>{{ searchString }}</h1>
     </div>
   </div>
 </template>
@@ -17,6 +21,20 @@ export default {
     data: () => ({
       searchString: ''
     }),
+    beforeRouteUpdate(to, from, next){
+      this.searchString = to.query.q
+      next()
+    },
+    methods:{
+      search(){
+        this.$router.push({
+          path: '/search',
+          query:{
+            q: this.searchString
+          }
+        })
+      }
+    },
     mounted(){
       this.searchString = this.$route.query.q
     }
@@ -40,11 +58,9 @@ $border-radius: 20px;
   justify-content: space-evenly;
   align-items: center;
 
-  // border: 2px solid red;
   padding: 1em;
 
   .icon{
-    // border: 2px solid yellow;
     width: 20%;
     display: flex;
     justify-content: center;
@@ -74,5 +90,10 @@ $border-radius: 20px;
       }
     }
   }
+}
+
+.container{
+  color: $white;
+  margin: 1em 2em;
 }
 </style>
