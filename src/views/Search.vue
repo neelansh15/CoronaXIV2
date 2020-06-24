@@ -5,21 +5,45 @@
         <img src="@/assets/Images/menu-white-18dp.svg" alt="Menu">
       </span>
       <form @submit.prevent="search()" class="navSearch">
-        <input type="text" v-model="searchString">
+        <input type="text" v-model="searchString" required>
       </form>
     </div>
 
     <div class="container">
-      <h1>{{ searchString }}</h1>
+      <div class="cards">
+          <Card v-for="paper in papers" :paper="paper" :key="paper.title + Math.random()" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import Card from '@/components/Card'
+
 export default {
     name: 'Search',
+    components:{
+      Card
+    },
     data: () => ({
-      searchString: ''
+      searchString: '',
+      papers: [
+        {
+          title: "Test title",
+          content: "Enim occaecat minim enim sit consequat tempor occaecat cillum minim et fugiat commodo consequat.",
+          author: "David McCode"
+        },
+        {
+          title: "Test title",
+          content: "Enim occaecat minim enim sit consequat tempor occaecat cillum minim et fugiat commodo consequat.",
+          author: "David McCode"
+        },
+        {
+          title: "Test title",
+          content: "Enim occaecat minim enim sit consequat tempor occaecat cillum minim et fugiat commodo consequat.",
+          author: "David McCode"
+        },
+      ]
     }),
     beforeRouteUpdate(to, from, next){
       this.searchString = to.query.q
@@ -36,7 +60,8 @@ export default {
       }
     },
     mounted(){
-      this.searchString = this.$route.query.q
+      // this.searchString = this.$route.query.q
+      console.log("MOUNTED")
     }
 }
 </script>
