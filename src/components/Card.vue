@@ -1,10 +1,10 @@
 <template>
   <div class="card">
-      <h1 class="card-title">{{ paper.title }}</h1>
-      <h2 class="card-subtitle">{{ paper.author }}</h2>
+      <h1 class="card-title">{{ paper._source.title }}</h1>
+      <h2 class="card-subtitle">{{ paper._source.authors }}</h2>
       <div class="content">
           <p>
-            {{ paper.content }}
+            {{ paper._source.excerpt }}
           </p>
       </div>
   </div>
@@ -37,6 +37,7 @@ $border-radius: 20px;
 
     .card-title{
         font-size: 1.5em;
+        margin-bottom: 0.25em;
     }
     .card-subtitle{
         font-size: 1em;

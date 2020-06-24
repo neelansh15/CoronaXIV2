@@ -5,13 +5,14 @@
         <img src="@/assets/Images/menu-white-18dp.svg" alt="Menu">
       </span>
       <form @submit.prevent="search()" class="navSearch">
-        <input type="text" v-model="searchString" required>
+        <input type="text" :style="(error) ? 'color:crimson' : 'color:white'" name="searchString" id="searchString" v-model="searchString" required>
       </form>
     </div>
 
     <div class="container">
+      <h2>{{ (loading) ? "Loading" : "" }}</h2>
       <div class="cards">
-          <Card v-for="paper in papers" :paper="paper" :key="paper.title + Math.random()" />
+          <Card v-for="paper in papers" :paper="paper" :key="paper._source.title + Math.random()" />
       </div>
     </div>
   </div>
@@ -19,6 +20,7 @@
 
 <script>
 import Card from '@/components/Card'
+import axios from 'axios'
 
 export default {
     name: 'Search',
@@ -27,41 +29,50 @@ export default {
     },
     data: () => ({
       searchString: '',
-      papers: [
-        {
-          title: "Test title",
-          content: "Enim occaecat minim enim sit consequat tempor occaecat cillum minim et fugiat commodo consequat.",
-          author: "David McCode"
-        },
-        {
-          title: "Test title",
-          content: "Enim occaecat minim enim sit consequat tempor occaecat cillum minim et fugiat commodo consequat.",
-          author: "David McCode"
-        },
-        {
-          title: "Test title",
-          content: "Enim occaecat minim enim sit consequat tempor occaecat cillum minim et fugiat commodo consequat.",
-          author: "David McCode"
-        },
-      ]
+      papers: [],
+      error: false,
+      loading: false
     }),
-    beforeRouteUpdate(to, from, next){
-      this.searchString = to.query.q
-      next()
+    // beforeRouteUpdate(to, from, next){
+    //   this.searchString = to.query.q
+    //   next()
+    // },
+    watch:{
+      '$route': 'callAPI'
     },
     methods:{
       search(){
-        this.$router.push({
-          path: '/search',
-          query:{
-            q: this.searchString
-          }
+        if(this.searchString == this.$route.query.q){
+          this.error = true
+          setTimeout(() => {
+            this.error = false
+          }, 1000)
+        }
+        else{
+          this.$router.push({
+            path: '/search',
+            query:{
+              q: this.searchString
+            }
+          })
+        }
+      },
+      callAPI(){
+        this.searchString = this.$route.query.q
+        let url = this.$store.state.getURL + this.searchString
+
+        this.loading = true
+        axios.get(url)
+        .then((response) => {
+          this.papers = response.data.data.hits.hits
+          this.loading = false
         })
       }
     },
     mounted(){
-      // this.searchString = this.$route.query.q
       console.log("MOUNTED")
+      //Initial value of searchString when user enters from Home Page's Search
+      this.callAPI()
     }
 }
 </script>

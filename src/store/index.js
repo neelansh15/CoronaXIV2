@@ -5,6 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    getURL: "https://corona-xiv.herokuapp.com/?title=",
+    loading: false
   },
   mutations: {
   },
