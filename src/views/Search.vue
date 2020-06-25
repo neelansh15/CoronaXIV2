@@ -146,6 +146,9 @@ $border-radius: 20px;
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
+
+    //For iOS
+    -webkit-overflow-scrolling: touch;
   }
 }
 </style>
