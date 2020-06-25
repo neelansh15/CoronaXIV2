@@ -86,4 +86,21 @@ $primary: #9161cf;
         }
     }
 }
+
+@media only screen and (max-width: 768px){
+    .card{
+        display: inline-block;
+        width: 50vw;
+        margin-right: 1em;
+
+        height: 100%;
+
+        // white-space: pre-line;
+        // .content{
+        //     width: 80%;
+        // }
+
+        flex: auto 0 0;
+    }
+}
 </style>

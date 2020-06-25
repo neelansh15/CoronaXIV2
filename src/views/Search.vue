@@ -62,6 +62,7 @@ export default {
         let url = this.$store.state.getURL + this.searchString
 
         this.loading = true
+
         axios.get(url)
         .then((response) => {
           this.papers = response.data.data.hits.hits
@@ -131,5 +132,20 @@ $border-radius: 20px;
 .container{
   color: $white;
   margin: 1em 2em;
+}
+
+@media only screen and (max-width: 768px){
+  body{
+    font-size: 12px;
+  }
+  .cards{
+    // overflow-x: scroll;
+    // overflow-y: hidden;
+    // white-space: nowrap;
+
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
 }
 </style>
