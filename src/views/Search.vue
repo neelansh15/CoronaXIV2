@@ -11,21 +11,24 @@
 
     <div class="container">
       <h2>{{ (loading) ? "Loading" : "" }}</h2>
-      <div class="cards" v-if="!loading">
+      <SkeletonCards />
+      <!-- <div class="cards" v-if="!loading">
           <Card v-for="paper in papers" :paper="paper" :key="paper._source.title + Math.random()" />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
-import Card from '@/components/Card'
+// import Card from '@/components/Card'
+import SkeletonCards from '@/components/SkeletonCards'
 import axios from 'axios'
 
 export default {
     name: 'Search',
     components:{
-      Card
+      // Card,
+      SkeletonCards
     },
     data: () => ({
       searchString: '',
@@ -42,7 +45,7 @@ export default {
     },
     methods:{
       search(){
-        if(this.searchString == this.$route.query.q){
+        if(this.searchString.toLowerCase() == this.$route.query.q.toLowerCase()){
           this.error = true
           setTimeout(() => {
             this.error = false
@@ -71,7 +74,7 @@ export default {
       }
     },
     mounted(){
-      console.log("MOUNTED")
+      console.log("Search component MOUNTED")
       //Initial value of searchString when user enters from Home Page's Search
       this.callAPI()
     }
@@ -134,21 +137,23 @@ $border-radius: 20px;
   margin: 1em 2em;
 }
 
-@media only screen and (max-width: 768px){
-  body{
-    font-size: 12px;
-  }
-  .cards{
-    // overflow-x: scroll;
-    // overflow-y: hidden;
-    // white-space: nowrap;
 
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
+//Horizontal Scrolling for Mobile. Decided not to implement it
+// @media only screen and (max-width: 768px){
+//   body{
+//     font-size: 12px;
+//   }
+//   .cards{
+//     // overflow-x: scroll;
+//     // overflow-y: hidden;
+//     // white-space: nowrap;
 
-    //For iOS
-    -webkit-overflow-scrolling: touch;
-  }
-}
+//     display: flex;
+//     flex-wrap: nowrap;
+//     overflow-x: auto;
+
+//     //For iOS
+//     -webkit-overflow-scrolling: touch;
+//   }
+// }
 </style>

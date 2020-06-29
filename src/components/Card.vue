@@ -87,20 +87,22 @@ $primary: #9161cf;
     }
 }
 
-@media only screen and (max-width: 768px){
-    .card{
-        display: inline-block;
-        width: 50vw;
-        margin-right: 1em;
 
-        height: 100%;
+//Horizontal Scrolling for Mobile. Decided not to implement it
+// @media only screen and (max-width: 768px){
+//     .card{
+//         display: inline-block;
+//         width: 50vw;
+//         margin-right: 1em;
 
-        // white-space: pre-line;
-        // .content{
-        //     width: 80%;
-        // }
+//         height: 100%;
 
-        flex: auto 0 0;
-    }
-}
+//         // white-space: pre-line;
+//         // .content{
+//         //     width: 80%;
+//         // }
+
+//         flex: auto 0 0;
+//     }
+// }
 </style>
