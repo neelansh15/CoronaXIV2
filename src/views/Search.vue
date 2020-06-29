@@ -10,29 +10,43 @@
     </div>
 
     <div class="container">
-      <h2>{{ (loading) ? "Loading" : "" }}</h2>
-      <SkeletonCards />
-      <!-- <div class="cards" v-if="!loading">
-          <Card v-for="paper in papers" :paper="paper" :key="paper._source.title + Math.random()" />
-      </div> -->
+      <SkeletonCards v-if="loading" />
+      <div v-else>
+
+          <paginate
+            :page-count="2"
+            :click-handler="paginateCallback"
+            :prev-text="'<span class=\'side-btn prev-btn\'>Prev</span>'"
+            :next-text="'<span class=\'side-btn next-btn\'>Next</span>'"
+            :container-class="'pagination-container'"
+            :page-class="'page-item'"
+            >
+          </paginate>
+
+          <div class="cards">
+              <Card v-for="paper in finalPapers" :paper="paper" :key="paper._source.title + Math.random()" />
+          </div>
+      </div>
+      <h3>{{ (!papers.length) ? "No results" : "" }}</h3>
     </div>
   </div>
 </template>
 
 <script>
-// import Card from '@/components/Card'
+import Card from '@/components/Card'
 import SkeletonCards from '@/components/SkeletonCards'
 import axios from 'axios'
 
 export default {
     name: 'Search',
     components:{
-      // Card,
+      Card,
       SkeletonCards
     },
     data: () => ({
       searchString: '',
       papers: [],
+      finalPapers: [],
       error: false,
       loading: false
     }),
@@ -60,6 +74,18 @@ export default {
           })
         }
       },
+
+      paginateCallback(pageNum){
+        if(pageNum == 1){
+          this.finalPapers = this.papers.slice(0, this.papers.length / 2)
+        }
+        else if(pageNum == 2){
+          //Don't know why but papers.length - 1 gives a result less and papers.length is perfect.
+          //Indexing in slice hmm
+          this.finalPapers = this.papers.slice(this.papers.length / 2, this.papers.length)
+        }
+      },
+
       callAPI(){
         this.searchString = this.$route.query.q
         let url = this.$store.state.getURL + this.searchString
@@ -69,14 +95,16 @@ export default {
         axios.get(url)
         .then((response) => {
           this.papers = response.data.data.hits.hits
+          this.paginateCallback(1)
           this.loading = false
         })
       }
     },
     mounted(){
-      console.log("Search component MOUNTED")
-      //Initial value of searchString when user enters from Home Page's Search
-      this.callAPI()
+      console.log("Search component Mounted")
+
+      if(this.$route.query.q == "" || this.$route.query.q == null) this.$route.push("/")
+      else this.callAPI()
     }
 }
 </script>
@@ -88,10 +116,6 @@ $dark: #282a2c;
 $lightdark: lighten($dark, 5);
 $white: whitesmoke;
 $border-radius: 20px;
-
-// *{
-//   border: 2px solid red;
-// }
 
 .navbar{
   display: flex;
@@ -135,6 +159,42 @@ $border-radius: 20px;
 .container{
   color: $white;
   margin: 1em 2em;
+}
+
+.pagination-container{
+  margin: 1em 2em;
+  width: calc(100% - 4em);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  list-style-type: none;
+
+  li a{
+    &:focus{
+      outline: none;
+    }
+  }
+}
+.page-item{
+  padding: 1em 1.5em;
+  background-color: $lightdark;
+}
+.page-item.active{
+  background-color: lighten($lightdark, 5);
+}
+.side-btn{
+  padding: 1em 1.5em;
+  background-color: darken($lightdark, 1);
+}
+.prev-btn{
+  border-top-left-radius: $border-radius;
+  border-bottom-left-radius: $border-radius;
+}
+.next-btn{
+  border-top-right-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
 }
 
 

@@ -31,6 +31,12 @@ export default {
             let semicolonIndex = url.indexOf(";")
             return url.slice(0, semicolonIndex)
         }
+    },
+    methods:{
+        // filter(paper){
+        //     if(paper)
+        //         return true
+        // }
     }
 }
 </script>
