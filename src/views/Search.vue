@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="navbar">
-      <span class="icon">
+      <span class="icon" @click="sidebarOpen = !sidebarOpen">
         <img src="@/assets/Images/menu-white-18dp.svg" alt="Menu">
       </span>
       <form @submit.prevent="search()" class="navSearch">
@@ -9,12 +9,22 @@
       </form>
     </div>
 
+    <transition name="slide">
+      <Sidebar v-if="sidebarOpen" @close="sidebarOpen = false" />
+    </transition>
+
     <div class="container">
+
+      {{ $store.state.filters }}
+
+      <h3>{{ (!papers.length && !loading) ? "No results" : "" }}</h3>
       <SkeletonCards v-if="loading" />
       <div v-else>
 
           <paginate
+            v-if="papers.length"
             :page-count="2"
+            v-model="page"
             :click-handler="paginateCallback"
             :prev-text="'<span class=\'side-btn prev-btn\'>Prev</span>'"
             :next-text="'<span class=\'side-btn next-btn\'>Next</span>'"
@@ -26,8 +36,20 @@
           <div class="cards">
               <Card v-for="paper in finalPapers" :paper="paper" :key="paper._source.title + Math.random()" />
           </div>
+
+          <paginate
+            v-if="papers.length"
+            :page-count="2"
+            v-model="page"
+            :click-handler="paginateCallback"
+            :prev-text="'<span class=\'side-btn prev-btn\'>Prev</span>'"
+            :next-text="'<span class=\'side-btn next-btn\'>Next</span>'"
+            :container-class="'pagination-container'"
+            :page-class="'page-item'"
+            >
+          </paginate>
+
       </div>
-      <h3>{{ (!papers.length) ? "No results" : "" }}</h3>
     </div>
   </div>
 </template>
@@ -35,20 +57,25 @@
 <script>
 import Card from '@/components/Card'
 import SkeletonCards from '@/components/SkeletonCards'
+import Sidebar from '@/components/Sidebar'
+
 import axios from 'axios'
 
 export default {
     name: 'Search',
     components:{
       Card,
-      SkeletonCards
+      SkeletonCards,
+      Sidebar
     },
     data: () => ({
+      page: 1,
       searchString: '',
       papers: [],
       finalPapers: [],
       error: false,
-      loading: false
+      loading: false,
+      sidebarOpen: false
     }),
     // beforeRouteUpdate(to, from, next){
     //   this.searchString = to.query.q
@@ -95,14 +122,16 @@ export default {
         axios.get(url)
         .then((response) => {
           this.papers = response.data.data.hits.hits
+          
+          //Reset pagination
           this.paginateCallback(1)
+          this.page = 1
+          
           this.loading = false
         })
       }
     },
     mounted(){
-      console.log("Search component Mounted")
-
       if(this.$route.query.q == "" || this.$route.query.q == null) this.$route.push("/")
       else this.callAPI()
     }
@@ -195,6 +224,15 @@ $border-radius: 20px;
 .next-btn{
   border-top-right-radius: $border-radius;
   border-bottom-right-radius: $border-radius;
+}
+
+
+//Sidebar transition
+.slide-enter-active, .slide-leave-active{
+  transition: all 0.5s ease-in-out;
+}
+.slide-enter, .slide-leave-to{
+  transform: translateX(-100%) scaleX(0) rotateZ(90deg);
 }
 
 
