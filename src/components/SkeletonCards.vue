@@ -39,7 +39,7 @@ $primary: #9161cf;
   position: relative;
   overflow: hidden;
 
-  z-index: 2;
+  z-index: -2;
 
   &::before{
     z-index: -1;

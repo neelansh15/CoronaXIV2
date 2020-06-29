@@ -1,5 +1,7 @@
 <template>
-  <div class="card">
+  <div class="card" v-if="show">
+      <!-- {{ this.paper._source.is_covid }} -->
+      {{ filters }}
       <h1 class="card-title">{{ paper._source.title }}</h1>
       <h2 class="card-subtitle">{{ paper._source.authors }}</h2>
       <div class="content">
@@ -25,18 +27,42 @@ export default {
             required: true
         }
     },
+    data: () => ({
+        show: true
+    }),
     computed:{
         finalUrl(){
             let url = this.paper._source.url
             let semicolonIndex = url.indexOf(";")
             return url.slice(0, semicolonIndex)
+        },
+        filters(){
+            return this.$store.getters.filters
         }
     },
     methods:{
-        // filter(paper){
-        //     if(paper)
-        //         return true
+        // updateFromFilter(){
+        //     let peerReviewed = this.paper._source.peer_reviewed
+        //     let onlyCovid = this.paper._source.is_covid
+
+        //     if(
+        //         (this.filters.peerReviewed == true && peerReviewed == "False") ||
+        //         (this.filters.onlyCovid == true && onlyCovid == "False")
+        //     ) this.show = false
+        //     else this.show = true
+        //     console.log("State change")
         // }
+    },
+    updated(){
+        let peerReviewed = this.paper._source.peer_reviewed
+        let onlyCovid = this.paper._source.is_covid
+
+        if(
+            (this.filters.peerReviewed == true && peerReviewed == "False") ||
+            (this.filters.onlyCovid == true && onlyCovid == "False")
+        ) this.show = false
+        else this.show = true
+        console.log("Updated lifecycle hook")
     }
 }
 </script>

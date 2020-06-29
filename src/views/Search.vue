@@ -229,10 +229,10 @@ $border-radius: 20px;
 
 //Sidebar transition
 .slide-enter-active, .slide-leave-active{
-  transition: all 0.5s ease-in-out;
+  transition: all 0.4s ease-in-out;
 }
 .slide-enter, .slide-leave-to{
-  transform: translateX(-100%) scaleX(0) rotateZ(90deg);
+  transform: translateX(-100%) scaleX(0);
 }
 
 
