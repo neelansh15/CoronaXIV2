@@ -15,7 +15,7 @@
 
     <div class="container">
 
-      {{ $store.state.filters }}
+      <h3>{{ $store.getters.count }}</h3>
 
       <h3>{{ (!papers.length && !loading) ? "No results" : "" }}</h3>
       <SkeletonCards v-if="loading" />
