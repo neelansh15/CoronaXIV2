@@ -7,8 +7,16 @@ on:
     branches: [master]
 
 jobs:
+  install:
+    runs-on: ubuntu-latest
+    name: Install
+    steps:
+      - name: Installing Vue
+        run: npm install -g @vue/cli
+    
   build:
     runs-on: ubuntu-latest
+    needs: [install]
     name: Building Vue App
     steps:
       - uses: actions/checkout@v1
