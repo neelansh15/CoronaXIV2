@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Building Vue App
     steps:
-      - uses: actions/checkout@v1
       - name: npm build
-      - run: npm run build && cd dist/
+      - uses: actions/checkout@v1
+      - run: npm run build
     
     
   deploy:
@@ -27,5 +27,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 8
-      - run: npm install -g surge
+      - run: |
+          cd dist/
+          npm install -g surge
       - run: surge ./ ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
