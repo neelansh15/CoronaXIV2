@@ -92,3 +92,18 @@ section{
     }
 
 }
+
+@media only screen and (min-width: 768px){
+    section{
+        .box{
+            width: 40vw;
+
+            .searchBox{
+                width: 90%;
+                .material-icon{
+                    width: 15%;
+                }
+            }
+        }
+    }
+}

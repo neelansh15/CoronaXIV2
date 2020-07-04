@@ -13,44 +13,52 @@
       <Sidebar v-if="sidebarOpen" @close="sidebarOpen = false" />
     </transition>
 
-    <div class="container">
+    <div class="two-grid">
 
-      <h3>{{ $store.getters.count }}</h3>
+      <div class="left-container">
+        <h1>Graph</h1>
+      </div>
 
-      <h3>{{ (!papers.length && !loading) ? "No results" : "" }}</h3>
-      <SkeletonCards v-if="loading" />
-      <div v-else>
+      <div class="container">
 
-          <paginate
-            v-if="papers.length"
-            :page-count="2"
-            v-model="page"
-            :click-handler="paginateCallback"
-            :prev-text="'<span class=\'side-btn prev-btn\'>Prev</span>'"
-            :next-text="'<span class=\'side-btn next-btn\'>Next</span>'"
-            :container-class="'pagination-container'"
-            :page-class="'page-item'"
-            >
-          </paginate>
+        <!-- <h3>{{ $store.getters.count }}</h3> -->
 
-          <div class="cards">
-              <Card v-for="paper in finalPapers" :paper="paper" :key="paper._source.title + Math.random()" />
-          </div>
+        <h3>{{ (!papers.length && !loading) ? "No results" : "" }}</h3>
+        <SkeletonCards v-if="loading" />
+        <div v-else>
 
-          <paginate
-            v-if="papers.length"
-            :page-count="2"
-            v-model="page"
-            :click-handler="paginateCallback"
-            :prev-text="'<span class=\'side-btn prev-btn\'>Prev</span>'"
-            :next-text="'<span class=\'side-btn next-btn\'>Next</span>'"
-            :container-class="'pagination-container'"
-            :page-class="'page-item'"
-            >
-          </paginate>
+            <paginate
+              v-if="papers.length"
+              :page-count="2"
+              v-model="page"
+              :click-handler="paginateCallback"
+              :prev-text="'<span class=\'side-btn prev-btn\'>Prev</span>'"
+              :next-text="'<span class=\'side-btn next-btn\'>Next</span>'"
+              :container-class="'pagination-container'"
+              :page-class="'page-item'"
+              >
+            </paginate>
 
+            <div class="cards">
+                <Card v-for="paper in finalPapers" :paper="paper" :key="paper._source.title + Math.random()" />
+            </div>
+
+            <paginate
+              v-if="papers.length"
+              :page-count="2"
+              v-model="page"
+              :click-handler="paginateCallback"
+              :prev-text="'<span class=\'side-btn prev-btn\'>Prev</span>'"
+              :next-text="'<span class=\'side-btn next-btn\'>Next</span>'"
+              :container-class="'pagination-container'"
+              :page-class="'page-item'"
+              >
+            </paginate>
+
+        </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -190,6 +198,11 @@ $border-radius: 20px;
   margin: 1em 2em;
 }
 
+.left-container{
+    margin: 2em 3em 3em;
+    color: $white;
+}
+
 .pagination-container{
   margin: 1em 2em;
   width: calc(100% - 4em);
@@ -254,4 +267,27 @@ $border-radius: 20px;
 //     -webkit-overflow-scrolling: touch;
 //   }
 // }
+
+@media only screen and (min-width: 768px){
+  .navbar{
+    display: flex;
+    justify-content: start;
+    .icon{
+      cursor: pointer;
+      width: fit-content;
+      margin: 0 2em;
+    }
+    .navSearch{
+      width: 100%;
+    }
+  }
+
+  .two-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+}
+
+
 </style>

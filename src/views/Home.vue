@@ -8,7 +8,7 @@
             <img src="@/assets/Images/search-white-18dp.svg" alt="Search">
           </span>
           <form @submit.prevent="search()">
-            <input type="text" v-model="searchString" @focus="footer = false" @blur="footer = true" required>
+            <input type="text" placeholder="Search" v-model="searchString" @focus="footer = false" @blur="footer = true" required>
           </form>
         </div>
       </div>

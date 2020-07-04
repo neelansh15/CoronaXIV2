@@ -45,7 +45,7 @@ $primary: #9161cf;
     z-index: -1;
     content: '';
     position: absolute;
-    left: 0;
+    left: -10%;
     top: 0;
     // width: 20%;
     // filter: blur(8px);
@@ -86,7 +86,7 @@ $primary: #9161cf;
 
 @keyframes skeleton-wipe{
   from{
-    left: 0;
+    left: -25%;
     width: 30%;
   }
   to{
