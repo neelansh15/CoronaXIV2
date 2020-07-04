@@ -5,7 +5,7 @@
         <img src="@/assets/Images/menu-white-18dp.svg" alt="Menu">
       </span>
       <form @submit.prevent="search()" class="navSearch">
-        <input type="text" :style="(error) ? 'color:crimson' : 'color:white'" name="searchString" id="searchString" v-model="searchString" required>
+        <input type="text" placeholder="Search" :style="(error) ? 'color:crimson' : 'color:white'" name="searchString" id="searchString" v-model="searchString" required>
       </form>
     </div>
 

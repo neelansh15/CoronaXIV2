@@ -115,4 +115,17 @@ $primary: #9161cf;
         align-items: center;
     }
 }
+
+@media only screen and (min-width: 768px){
+    .sidebar{
+        width: 30%;
+
+        .box{
+            .closeIcon{
+                cursor: pointer;
+            }
+        }
+    }
+}
+
 </style>

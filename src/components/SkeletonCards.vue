@@ -95,4 +95,10 @@ $primary: #9161cf;
   }
 }
 
+@media only screen and (min-width: 768px){
+  .skeleton-card{
+    padding: 3em 4em;
+  }
+}
+
 </style>

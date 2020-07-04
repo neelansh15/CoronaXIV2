@@ -124,4 +124,10 @@ $primary: #9161cf;
 //         flex: auto 0 0;
 //     }
 // }
+
+@media only screen and (min-width: 768px){
+    .card{
+        padding: 2em 3em;
+    }
+}
 </style>
