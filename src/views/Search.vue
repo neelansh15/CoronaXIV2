@@ -2,10 +2,18 @@
   <div>
     <div class="navbar">
       <span class="icon" @click="sidebarOpen = !sidebarOpen">
-        <img src="@/assets/Images/menu-white-18dp.svg" alt="Menu">
+        <img src="@/assets/Images/menu-white-18dp.svg" alt="Menu" />
       </span>
       <form @submit.prevent="search()" class="navSearch">
-        <input type="text" placeholder="Search" :style="(error) ? 'color:crimson' : 'color:white'" name="searchString" id="searchString" v-model="searchString" required>
+        <input
+          type="text"
+          placeholder="Search"
+          :style="(error) ? 'color:crimson' : 'color:white'"
+          name="searchString"
+          id="searchString"
+          v-model="searchString"
+          required
+        />
       </form>
     </div>
 
@@ -14,170 +22,193 @@
     </transition>
 
     <div class="two-grid">
-
       <div class="left-container">
-        <h1>Graph</h1>
+        <h1>Chart</h1>
+        <Chart
+          :chartData="{
+          labels: [100, 100],
+          datasets: [{
+            label: 'Scatter Plot',
+            backgroundColor: 'white',
+            data: dataForChart
+          }]
+        }"
+        />
       </div>
 
       <div class="container">
-
         <!-- <h3>{{ $store.getters.count }}</h3> -->
 
         <h3>{{ (!papers.length && !loading) ? "No results" : "" }}</h3>
         <SkeletonCards v-if="loading" />
         <div v-else>
+          <paginate
+            v-if="papers.length"
+            :page-count="2"
+            v-model="page"
+            :click-handler="paginateCallback"
+            :prev-text="'<span class=\'side-btn prev-btn\'>Prev</span>'"
+            :next-text="'<span class=\'side-btn next-btn\'>Next</span>'"
+            :container-class="'pagination-container'"
+            :page-class="'page-item'"
+          ></paginate>
 
-            <paginate
-              v-if="papers.length"
-              :page-count="2"
-              v-model="page"
-              :click-handler="paginateCallback"
-              :prev-text="'<span class=\'side-btn prev-btn\'>Prev</span>'"
-              :next-text="'<span class=\'side-btn next-btn\'>Next</span>'"
-              :container-class="'pagination-container'"
-              :page-class="'page-item'"
-              >
-            </paginate>
+          <div class="cards">
+            <Card
+              v-for="paper in finalPapers"
+              :paper="paper"
+              :key="paper._source.title + Math.random()"
+            />
+          </div>
 
-            <div class="cards">
-                <Card v-for="paper in finalPapers" :paper="paper" :key="paper._source.title + Math.random()" />
-            </div>
-
-            <paginate
-              v-if="papers.length"
-              :page-count="2"
-              v-model="page"
-              :click-handler="paginateCallback"
-              :prev-text="'<span class=\'side-btn prev-btn\'>Prev</span>'"
-              :next-text="'<span class=\'side-btn next-btn\'>Next</span>'"
-              :container-class="'pagination-container'"
-              :page-class="'page-item'"
-              >
-            </paginate>
-
+          <paginate
+            v-if="papers.length"
+            :page-count="2"
+            v-model="page"
+            :click-handler="paginateCallback"
+            :prev-text="'<span class=\'side-btn prev-btn\'>Prev</span>'"
+            :next-text="'<span class=\'side-btn next-btn\'>Next</span>'"
+            :container-class="'pagination-container'"
+            :page-class="'page-item'"
+          ></paginate>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
-import Card from '@/components/Card'
-import SkeletonCards from '@/components/SkeletonCards'
-import Sidebar from '@/components/Sidebar'
+import Card from "@/components/Card";
+import SkeletonCards from "@/components/SkeletonCards";
+import Sidebar from "@/components/Sidebar";
+import Chart from "@/components/Chart.vue";
 
-import axios from 'axios'
+import axios from "axios";
 
 export default {
-    name: 'Search',
-    components:{
-      Card,
-      SkeletonCards,
-      Sidebar
-    },
-    data: () => ({
-      page: 1,
-      searchString: '',
-      papers: [],
-      finalPapers: [],
-      error: false,
-      loading: false,
-      sidebarOpen: false
-    }),
-    // beforeRouteUpdate(to, from, next){
-    //   this.searchString = to.query.q
-    //   next()
-    // },
-    watch:{
-      '$route': 'callAPI'
-    },
-    methods:{
-      search(){
-        if(this.searchString.toLowerCase() == this.$route.query.q.toLowerCase()){
-          this.error = true
-          setTimeout(() => {
-            this.error = false
-          }, 1000)
-        }
-        else{
-          this.$router.push({
-            path: '/search',
-            query:{
-              q: this.searchString
-            }
-          })
-        }
-      },
-
-      paginateCallback(pageNum){
-        if(pageNum == 1){
-          this.finalPapers = this.papers.slice(0, this.papers.length / 2)
-        }
-        else if(pageNum == 2){
-          //Don't know why but papers.length - 1 gives a result less and papers.length is perfect.
-          //Indexing in slice hmm
-          this.finalPapers = this.papers.slice(this.papers.length / 2, this.papers.length)
-        }
-      },
-
-      callAPI(){
-        this.searchString = this.$route.query.q
-        let url = this.$store.state.getURL + this.searchString
-
-        this.loading = true
-
-        axios.get(url)
-        .then((response) => {
-          this.papers = response.data.data.hits.hits
-          
-          //Reset pagination
-          this.paginateCallback(1)
-          this.page = 1
-          
-          this.loading = false
-        })
+  name: "Search",
+  components: {
+    Card,
+    SkeletonCards,
+    Sidebar,
+    Chart,
+  },
+  data: () => ({
+    page: 1,
+    searchString: "",
+    papers: [],
+    finalPapers: [],
+    error: false,
+    loading: false,
+    sidebarOpen: false,
+    dataForChart: [],
+  }),
+  // beforeRouteUpdate(to, from, next){
+  //   this.searchString = to.query.q
+  //   next()
+  // },
+  watch: {
+    $route: "callAPI",
+  },
+  methods: {
+    search() {
+      if (
+        this.searchString.toLowerCase() == this.$route.query.q.toLowerCase()
+      ) {
+        this.error = true;
+        setTimeout(() => {
+          this.error = false;
+        }, 1000);
+      } else {
+        this.$router.push({
+          path: "/search",
+          query: {
+            q: this.searchString,
+          },
+        });
       }
     },
-    mounted(){
-      if(this.$route.query.q == "" || this.$route.query.q == null) this.$route.push("/")
-      else this.callAPI()
-    }
-}
+
+    paginateCallback(pageNum) {
+      if (pageNum == 1) {
+        this.finalPapers = this.papers.slice(0, this.papers.length / 2);
+      } else if (pageNum == 2) {
+        //Don't know why but papers.length - 1 gives a result less and papers.length is perfect.
+        //Indexing in slice hmm
+        this.finalPapers = this.papers.slice(
+          this.papers.length / 2,
+          this.papers.length
+        );
+      }
+    },
+
+    callAPI() {
+      this.searchString = this.$route.query.q;
+      let url = this.$store.state.getURL + this.searchString;
+
+      this.loading = true;
+
+      axios.get(url).then((response) => {
+        this.papers = response.data.data.hits.hits;
+
+        //Reset pagination
+        this.paginateCallback(1);
+        this.page = 1;
+
+        this.loading = false;
+
+        this.buildChart(this.papers);
+      });
+    },
+
+    buildChart(papers) {
+      papers.forEach((paper) => {
+        this.dataForChart.push({
+          x: paper._source.x1,
+          y: paper._source.x2,
+        });
+      });
+    },
+  },
+  mounted() {
+    if (this.$route.query.q == "" || this.$route.query.q == null)
+      this.$route.push("/");
+    else this.callAPI();
+  },
+};
 </script>
 
 <style lang="scss">
-
 //Variables
 $dark: #282a2c;
 $lightdark: lighten($dark, 5);
 $white: whitesmoke;
 $border-radius: 20px;
 
-.navbar{
+.navbar {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 
   padding: 1em;
 
-  .icon{
+  .icon {
     width: 20%;
     display: flex;
     justify-content: center;
     align-items: center;
 
-    img{
+    img {
       width: 2em;
     }
   }
 
-  .navSearch{
+  .navSearch {
     width: 70%;
     margin-right: 2em;
     height: 2.8em;
 
-    input{
+    input {
       background-color: $lightdark;
       color: $white;
       border: none;
@@ -186,24 +217,24 @@ $border-radius: 20px;
       padding: 0 1em;
       font-weight: bold;
 
-      &:focus{
+      &:focus {
         outline: none !important;
       }
     }
   }
 }
 
-.container{
+.container {
   color: $white;
   margin: 1em 2em;
 }
 
-.left-container{
-    margin: 2em 3em 3em;
-    color: $white;
+.left-container {
+  margin: 2em 3em 3em;
+  color: $white;
 }
 
-.pagination-container{
+.pagination-container {
   margin: 1em 2em;
   width: calc(100% - 4em);
 
@@ -213,41 +244,41 @@ $border-radius: 20px;
 
   list-style-type: none;
 
-  li a{
-    &:focus{
+  li a {
+    &:focus {
       outline: none;
     }
   }
 }
-.page-item{
+.page-item {
   padding: 1em 1.5em;
   background-color: $lightdark;
 }
-.page-item.active{
+.page-item.active {
   background-color: lighten($lightdark, 5);
 }
-.side-btn{
+.side-btn {
   padding: 1em 1.5em;
   background-color: darken($lightdark, 1);
 }
-.prev-btn{
+.prev-btn {
   border-top-left-radius: $border-radius;
   border-bottom-left-radius: $border-radius;
 }
-.next-btn{
+.next-btn {
   border-top-right-radius: $border-radius;
   border-bottom-right-radius: $border-radius;
 }
 
-
 //Sidebar transition
-.slide-enter-active, .slide-leave-active{
+.slide-enter-active,
+.slide-leave-active {
   transition: all 0.4s ease-in-out;
 }
-.slide-enter, .slide-leave-to{
+.slide-enter,
+.slide-leave-to {
   transform: translateX(-100%) scaleX(0);
 }
-
 
 //Horizontal Scrolling for Mobile. Decided not to implement it
 // @media only screen and (max-width: 768px){
@@ -268,26 +299,23 @@ $border-radius: 20px;
 //   }
 // }
 
-@media only screen and (min-width: 768px){
-  .navbar{
+@media only screen and (min-width: 768px) {
+  .navbar {
     display: flex;
     justify-content: start;
-    .icon{
+    .icon {
       cursor: pointer;
       width: fit-content;
       margin: 0 2em;
     }
-    .navSearch{
+    .navSearch {
       width: 100%;
     }
   }
 
-  .two-grid{
+  .two-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
-
 }
-
-
 </style>
