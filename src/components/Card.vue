@@ -98,7 +98,7 @@ $primary: #9161cf;
     border-radius: $border-radius;
   }
   .card-title {
-    font-size: 1.5em;
+    font-size: 1.6em;
     margin-bottom: 0.25em;
   }
   .card-subtitle {
@@ -117,6 +117,7 @@ $primary: #9161cf;
       margin: 0.5em 0.2em 0;
       color: $dark;
       font-weight: bold;
+      font-size: 0.9em;
       background-color: $primary;
       padding: 0.1em 0.4em;
       border-radius: $border-radius;
