@@ -26,12 +26,8 @@
         <h1>Chart</h1>
         <Chart
           :chartData="{
-          labels: [100, 100],
-          datasets: [{
-            label: 'Scatter Plot',
-            backgroundColor: 'white',
-            data: dataForChart
-          }]
+          labels: ['Good', 'Noice'],
+          datasets: datasets
         }"
         />
       </div>
@@ -102,11 +98,24 @@ export default {
     loading: false,
     sidebarOpen: false,
     dataForChart: [],
+    clusters: ['Drug testing', 'Covid Outbreak', 'Detection', 'Treatments', 'Genetic Studies', 'Transmission', 'Crisis Management', 'Immunity Studies']
   }),
-  // beforeRouteUpdate(to, from, next){
-  //   this.searchString = to.query.q
-  //   next()
-  // },
+  computed: {
+    datasets() {
+      return [
+        {
+          label: "Scatter Plot",
+          backgroundColor: "white",
+          data: this.dataForChart,
+        },
+        {
+          label: "Scatter Plot 2",
+          backgroundColor: "purple",
+          data:[{x: 10, y: 8}, {x: 14, y: 10}],
+        },
+      ];
+    },
+  },
   watch: {
     $route: "callAPI",
   },
@@ -157,11 +166,13 @@ export default {
 
         this.loading = false;
 
+        console.log(this.papers);
         this.buildChart(this.papers);
       });
     },
 
     buildChart(papers) {
+      this.dataForChart = [];
       papers.forEach((paper) => {
         this.dataForChart.push({
           x: paper._source.x1,

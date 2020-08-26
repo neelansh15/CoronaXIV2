@@ -1,57 +1,69 @@
 <template>
   <div class="card" v-if="show">
-      <!-- {{ this.paper._source.peer_reviewed }}
-      {{ this.paper._source.is_covid }} -->
-      <h1 class="card-title">{{ paper._source.title }}</h1>
-      <h2 class="card-subtitle">{{ paper._source.authors }}</h2>
-      <div class="content">
-          <p>
-            {{ paper._source.excerpt }}
-          </p>
-      </div>
-      <div class="card-footer">
-          <a :href="finalUrl" target="_blank">
-            <button class="button">Visit</button>
-          </a>
-          <span class="date">{{ paper._source.publish_time }}</span>
-      </div>
+    <!-- {{ this.paper._source.peer_reviewed }}
+    {{ this.paper._source.is_covid }}-->
+    <h1 class="card-title">{{ paper._source.title }}</h1>
+    <h2 class="card-subtitle">{{ paper._source.authors }}</h2>
+    <div class="content">
+      <p>{{ paper._source.excerpt }}</p>
+    </div>
+    <div class="keywords">
+      <span class="keyword" v-for="keyword in keywords" :key="keyword">{{keyword}}</span>
+    </div>
+    <div class="card-footer">
+      <a :href="finalUrl" target="_blank">
+        <button class="button">Visit</button>
+      </a>
+      <span class="date">{{ paper._source.publish_time }}</span>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-    name: 'Card',
-    props:{
-        paper:{
-            type: Object,
-            required: true
-        }
+  name: "Card",
+  props: {
+    paper: {
+      type: Object,
+      required: true,
     },
-    computed:{
-        finalUrl(){
-            let url = this.paper._source.url
-            let semicolonIndex = url.indexOf(";")
-            return url.slice(0, semicolonIndex)
-        },
-        filters(){
-            return this.$store.getters.filters
-        },
-        show(){
-            console.log("State of show changed")
+  },
+  computed: {
+    keywords() {
+      let keywords = this.paper._source.keywords;
+      keywords = keywords
+        .slice(0, -1)
+        .slice(1, -1)
+        .replace(/'/g, "")
+        .split(",");
 
-            let peerReviewed = this.paper._source.peer_reviewed
-            let onlyCovid = this.paper._source.is_covid
+      return keywords;
+    },
+    finalUrl() {
+      let url = this.paper._source.url;
+      let semicolonIndex = url.indexOf(";");
+      return url.slice(0, semicolonIndex);
+    },
+    filters() {
+      return this.$store.getters.filters;
+    },
+    show() {
+      console.log("State of show changed");
 
-            if(
-                (this.filters.peerReviewed == true && peerReviewed == "False") ||
-                (this.filters.onlyCovid == true && onlyCovid == "False")
-            ) return false
-            else {
-                return true
-            }
-        }
-    }
-}
+      let peerReviewed = this.paper._source.peer_reviewed;
+      let onlyCovid = this.paper._source.is_covid;
+
+      if (
+        (this.filters.peerReviewed == true && peerReviewed == "False") ||
+        (this.filters.onlyCovid == true && onlyCovid == "False")
+      )
+        return false;
+      else {
+        return true;
+      }
+    },
+  },
+};
 </script>
 
 <style lang="scss">
@@ -63,49 +75,62 @@ $border-radius: 20px;
 
 $primary: #9161cf;
 
-.card{
-    background-color: $lightdark;
-    padding: 2em;
-    border-radius: $border-radius;
-    margin-bottom: 1em;
+.card {
+  background-color: $lightdark;
+  padding: 2em;
+  border-radius: $border-radius;
+  margin-bottom: 1em;
 
-    .card-title{
-        font-size: 1.5em;
-        margin-bottom: 0.25em;
+  .card-title {
+    font-size: 1.5em;
+    margin-bottom: 0.25em;
+  }
+  .card-subtitle {
+    font-size: 1em;
+    color: $primary;
+  }
+  .content {
+    margin-top: 1em;
+  }
+  .keywords {
+    margin-top: 1em;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    .keyword {
+      margin: 0.5em 0.25em 0;
+      color: $lightdark;
+      font-weight: bold;
+      background-color: $primary;
+      padding: 0.1em 0.4em;
+      border-radius: $border-radius;
     }
-    .card-subtitle{
-        font-size: 1em;
-        color: $primary;
-    }
-    .content{
-        margin-top: 1em;
-    }
-    .card-footer{
-        margin-top: 1.5em;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+  }
+  .card-footer {
+    margin-top: 1.5em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-        .button{
-            border-radius: $border-radius;
-            padding: 0.8em 1.5em;
-            background: $primary;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
+    .button {
+      border-radius: $border-radius;
+      padding: 0.8em 1.5em;
+      background: $primary;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
 
-            &:focus{
-                outline: none !important;
-            }
-        }
-
-        .date{
-            color: lighten($primary, 10);
-            font-weight: bold;
-        }
+      &:focus {
+        outline: none !important;
+      }
     }
+
+    .date {
+      color: lighten($primary, 10);
+      font-weight: bold;
+    }
+  }
 }
-
 
 //Horizontal Scrolling for Mobile. Decided not to implement it
 // @media only screen and (max-width: 768px){
@@ -125,9 +150,9 @@ $primary: #9161cf;
 //     }
 // }
 
-@media only screen and (min-width: 768px){
-    .card{
-        padding: 2em 3em;
-    }
+@media only screen and (min-width: 768px) {
+  .card {
+    padding: 2em 3em;
+  }
 }
 </style>
