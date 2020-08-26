@@ -98,7 +98,7 @@ $primary: #9161cf;
     align-items: center;
     flex-wrap: wrap;
     .keyword {
-      margin: 0.5em 0.25em 0;
+      margin: 0.5em 0.2em 0;
       color: $lightdark;
       font-weight: bold;
       background-color: $primary;

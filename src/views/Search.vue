@@ -26,7 +26,7 @@
         <h1>Chart</h1>
         <Chart
           :chartData="{
-          labels: ['Good', 'Noice'],
+          labels: ['x', 'y'],
           datasets: datasets
         }"
         />
@@ -97,23 +97,60 @@ export default {
     error: false,
     loading: false,
     sidebarOpen: false,
-    dataForChart: [],
-    clusters: ['Drug testing', 'Covid Outbreak', 'Detection', 'Treatments', 'Genetic Studies', 'Transmission', 'Crisis Management', 'Immunity Studies']
   }),
   computed: {
     datasets() {
-      return [
+      let datasets = [
         {
-          label: "Scatter Plot",
+          label: "Drug testing",
           backgroundColor: "white",
-          data: this.dataForChart,
+          data: [],
         },
         {
-          label: "Scatter Plot 2",
+          label: "Covid Outbreak",
+          backgroundColor: "yellow",
+          data: [],
+        },
+        {
+          label: "Detection",
+          backgroundColor: "lime",
+          data: [],
+        },
+        {
+          label: "Treatments",
+          backgroundColor: "blue",
+          data: [],
+        },
+        {
+          label: "Genetic Studies",
           backgroundColor: "purple",
-          data:[{x: 10, y: 8}, {x: 14, y: 10}],
+          data: [],
+        },
+        {
+          label: "Transmission",
+          backgroundColor: "red",
+          data: [],
+        },
+        {
+          label: "Crisis Management",
+          backgroundColor: "teal",
+          data: [],
+        },
+        {
+          label: "Immunity Studies",
+          backgroundColor: "orange",
+          data: [],
         },
       ];
+
+      this.papers.forEach((paper) => {
+        datasets[paper._source.cluster].data.push({
+          x: paper._source.x1,
+          y: paper._source.x2
+        })
+      });
+
+      return datasets
     },
   },
   watch: {
@@ -167,19 +204,19 @@ export default {
         this.loading = false;
 
         console.log(this.papers);
-        this.buildChart(this.papers);
+        // this.buildChart(this.papers);
       });
     },
 
-    buildChart(papers) {
-      this.dataForChart = [];
-      papers.forEach((paper) => {
-        this.dataForChart.push({
-          x: paper._source.x1,
-          y: paper._source.x2,
-        });
-      });
-    },
+    // buildChart(papers) {
+    //   this.dataForChart = [];
+    //   papers.forEach((paper) => {
+    //     this.dataForChart.push({
+    //       x: paper._source.x1,
+    //       y: paper._source.x2,
+    //     });
+    //   });
+    // },
   },
   mounted() {
     if (this.$route.query.q == "" || this.$route.query.q == null)
