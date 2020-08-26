@@ -84,6 +84,7 @@ $primary: #9161cf;
     height: 100vh;
     width: 100%;
     background-color: darken($dark, 2);
+    z-index: 10;
 
     color: $white;
     overflow-y: hidden;

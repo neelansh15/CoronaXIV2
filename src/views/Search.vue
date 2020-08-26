@@ -23,13 +23,15 @@
 
     <div class="two-grid">
       <div class="left-container">
-        <h1>Chart</h1>
-        <Chart
-          :chartData="{
+        <div class="chart">
+          <h1>Chart</h1>
+          <Chart
+            :chartData="{
           labels: ['x', 'y'],
           datasets: datasets
         }"
-        />
+          />
+        </div>
       </div>
 
       <div class="container">
@@ -54,6 +56,8 @@
               v-for="paper in finalPapers"
               :paper="paper"
               :key="paper._source.title + Math.random()"
+
+              :datasets="datasets"
             />
           </div>
 
@@ -108,17 +112,17 @@ export default {
         },
         {
           label: "Covid Outbreak",
-          backgroundColor: "yellow",
+          backgroundColor: "#e9f74d",
           data: [],
         },
         {
           label: "Detection",
-          backgroundColor: "lime",
+          backgroundColor: "#36c954",
           data: [],
         },
         {
           label: "Treatments",
-          backgroundColor: "blue",
+          backgroundColor: "#314bcc",
           data: [],
         },
         {
@@ -128,7 +132,7 @@ export default {
         },
         {
           label: "Transmission",
-          backgroundColor: "red",
+          backgroundColor: "#d13737",
           data: [],
         },
         {
@@ -146,11 +150,11 @@ export default {
       this.papers.forEach((paper) => {
         datasets[paper._source.cluster].data.push({
           x: paper._source.x1,
-          y: paper._source.x2
-        })
+          y: paper._source.x2,
+        });
       });
 
-      return datasets
+      return datasets;
     },
   },
   watch: {
@@ -364,6 +368,11 @@ $border-radius: 20px;
   .two-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
+  }
+
+  .chart {
+    position: fixed;
+    width: 35vw;
   }
 }
 </style>

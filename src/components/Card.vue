@@ -2,6 +2,9 @@
   <div class="card" v-if="show">
     <!-- {{ this.paper._source.peer_reviewed }}
     {{ this.paper._source.is_covid }}-->
+    <div class="cluster-name" :style="'background-color: ' + datasets[paper._source.cluster].backgroundColor">
+      {{ paper._source.cluster_name }}
+    </div>
     <h1 class="card-title">{{ paper._source.title }}</h1>
     <h2 class="card-subtitle">{{ paper._source.authors }}</h2>
     <div class="content">
@@ -27,6 +30,10 @@ export default {
       type: Object,
       required: true,
     },
+    datasets:{
+      type: Array,
+      required: false
+    }
   },
   computed: {
     keywords() {
@@ -81,6 +88,15 @@ $primary: #9161cf;
   border-radius: $border-radius;
   margin-bottom: 1em;
 
+  .cluster-name{
+    width: fit-content;
+    padding: 0.5em 1em;
+    margin-bottom: 1em;
+    color: $dark;
+    font-size: 0.8em;
+    font-weight: bold;
+    border-radius: $border-radius;
+  }
   .card-title {
     font-size: 1.5em;
     margin-bottom: 0.25em;
@@ -99,7 +115,7 @@ $primary: #9161cf;
     flex-wrap: wrap;
     .keyword {
       margin: 0.5em 0.2em 0;
-      color: $lightdark;
+      color: $dark;
       font-weight: bold;
       background-color: $primary;
       padding: 0.1em 0.4em;
