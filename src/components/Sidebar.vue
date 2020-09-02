@@ -41,10 +41,10 @@
             <b>Date range:</b>
             <button class="button" @click="() => dateRange = null">Clear</button>
           </div>
-          {{ filters}}
-          <br />
-          {{ finalDateRange }}
-          <br />
+
+          <!-- Somehow it doesn't work without this being called somewhere, so it's hidden -->
+          <span hidden>{{ finalDateRange }}</span>
+
           <v-date-picker mode="range" color="purple" v-model="dateRange" is-dark is-inline />
         </div>
       </div>
@@ -57,7 +57,7 @@ export default {
   name: "Sidebar",
   data() {
     return {
-      dateRange: null,
+      dateRange: this.$store.getters.filters.dateRange,
     };
   },
   computed: {
@@ -65,7 +65,7 @@ export default {
       return this.$store.getters.filters;
     },
     finalDateRange() {
-      if (this.dateRange) {
+      if (this.dateRange != null) {
         let final = {
           start: this.convertDate(this.dateRange.start),
           end: this.convertDate(this.dateRange.end),
@@ -91,6 +91,7 @@ export default {
       this.$store.dispatch("updateFilterState", this.filters);
     },
     convertDate(date) {
+      date = new Date(date)
       let day = date.getDate();
       if (day < 10) {
         day = "0" + day;

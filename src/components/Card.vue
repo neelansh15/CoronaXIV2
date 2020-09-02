@@ -2,7 +2,7 @@
   <div class="card" v-if="show">
     <!-- {{ this.paper._source.peer_reviewed }}
     {{ this.paper._source.is_covid }}-->
-    {{ filters }}
+    {{ filters.dateRange }}
     <div class="cluster-name" :style="'background-color: ' + datasets[paper._source.cluster].backgroundColor">
       {{ paper._source.cluster_name }}
     </div>

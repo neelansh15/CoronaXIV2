@@ -18,7 +18,7 @@
     </div>
 
     <transition name="slide">
-      <Sidebar v-if="sidebarOpen" @close="sidebarOpen = false" />
+      <Sidebar v-show="sidebarOpen" @close="sidebarOpen = false" />
     </transition>
 
     <div class="two-grid">
