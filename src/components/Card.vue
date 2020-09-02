@@ -2,10 +2,10 @@
   <div class="card" v-if="show">
     <!-- {{ this.paper._source.peer_reviewed }}
     {{ this.paper._source.is_covid }}-->
-    {{ filters.dateRange }}
-    <div class="cluster-name" :style="'background-color: ' + datasets[paper._source.cluster].backgroundColor">
-      {{ paper._source.cluster_name }}
-    </div>
+    <div
+      class="cluster-name"
+      :style="'background-color: ' + datasets[paper._source.cluster].backgroundColor"
+    >{{ paper._source.cluster_name }}</div>
     <h1 class="card-title">{{ paper._source.title }}</h1>
     <h2 class="card-subtitle">{{ paper._source.authors }}</h2>
     <div class="content">
@@ -31,10 +31,10 @@ export default {
       type: Object,
       required: true,
     },
-    datasets:{
+    datasets: {
       type: Array,
-      required: false
-    }
+      required: false,
+    },
   },
   computed: {
     keywords() {
@@ -60,13 +60,22 @@ export default {
 
       let peerReviewed = this.paper._source.peer_reviewed;
       let onlyCovid = this.paper._source.is_covid;
-      // let date = this.paper._source.publish_time;
+      let date = new Date(this.paper._source.publish_time);
 
       let show = true;
 
-      if(this.filters.peerReviewed && peerReviewed == "False") show = false;
-      else if(this.filters.onlyCovid && onlyCovid == "False") show = false;
-      
+      if (this.filters.peerReviewed && peerReviewed == "False") show = false;
+      else if (this.filters.onlyCovid && onlyCovid == "False") show = false;
+      else if(this.filters.dateRange != null){
+        let start = new Date(this.filters.dateRange.start)
+        let end = new Date(this.filters.dateRange.end)
+        
+        console.log(start.getTime() + " " + end.getTime())
+        console.log(date.getTime())
+
+        if(date.getTime() > end.getTime() || date.getTime() < start.getTime()) show = false;
+      }
+
       return show;
 
       // if (
@@ -97,7 +106,7 @@ $primary: #9161cf;
   border-radius: $border-radius;
   margin-bottom: 1em;
 
-  .cluster-name{
+  .cluster-name {
     width: fit-content;
     padding: 0.5em 1em;
     margin-bottom: 1em;
