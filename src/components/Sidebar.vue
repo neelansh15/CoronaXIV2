@@ -41,10 +41,8 @@
             <b>Date range:</b>
             <button class="button" @click="() => dateRange = null">Clear</button>
           </div>
-          <!-- {{ (finalDateRange) ? finalDateRange.start: null }}
+          {{ filters}}
           <br />
-          {{ (finalDateRange) ? finalDateRange.end : null }} -->
-          {{ filters }} <br />
           {{ finalDateRange }}
           <br />
           <v-date-picker mode="range" color="purple" v-model="dateRange" is-dark is-inline />
@@ -57,10 +55,10 @@
 <script>
 export default {
   name: "Sidebar",
-  data(){
-      return{
-          dateRange: null
-      }
+  data() {
+    return {
+      dateRange: null,
+    };
   },
   computed: {
     filters() {

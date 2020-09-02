@@ -122,7 +122,7 @@ export default {
         },
         {
           label: "Treatments",
-          backgroundColor: "#314bcc",
+          backgroundColor: "#517fc9",
           data: [],
         },
         {

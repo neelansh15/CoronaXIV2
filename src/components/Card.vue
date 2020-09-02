@@ -2,6 +2,7 @@
   <div class="card" v-if="show">
     <!-- {{ this.paper._source.peer_reviewed }}
     {{ this.paper._source.is_covid }}-->
+    {{ filters }}
     <div class="cluster-name" :style="'background-color: ' + datasets[paper._source.cluster].backgroundColor">
       {{ paper._source.cluster_name }}
     </div>
@@ -59,15 +60,23 @@ export default {
 
       let peerReviewed = this.paper._source.peer_reviewed;
       let onlyCovid = this.paper._source.is_covid;
+      // let date = this.paper._source.publish_time;
 
-      if (
-        (this.filters.peerReviewed == true && peerReviewed == "False") ||
-        (this.filters.onlyCovid == true && onlyCovid == "False")
-      )
-        return false;
-      else {
-        return true;
-      }
+      let show = true;
+
+      if(this.filters.peerReviewed && peerReviewed == "False") show = false;
+      else if(this.filters.onlyCovid && onlyCovid == "False") show = false;
+      
+      return show;
+
+      // if (
+      //   (this.filters.peerReviewed == true && peerReviewed == "False") ||
+      //   (this.filters.onlyCovid == true && onlyCovid == "False")
+      // )
+      //   return false;
+      // else {
+      //   return true;
+      // }
     },
   },
 };
