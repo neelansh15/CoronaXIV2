@@ -55,7 +55,7 @@
             <Card
               v-for="paper in finalPapers"
               :paper="paper"
-              :key="paper._source.title + Math.random()"
+              :key="paper._source.id + paper._source.title"
 
               :datasets="datasets"
             />

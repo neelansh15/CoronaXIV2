@@ -10,6 +10,9 @@ Vue.component('paginate', Paginate)
 import ToggleButton from 'vue-js-toggle-button'
 Vue.use(ToggleButton)
 
+import VCalendar from 'v-calendar'
+Vue.use(VCalendar)
+
 Vue.config.productionTip = false
 
 new Vue({

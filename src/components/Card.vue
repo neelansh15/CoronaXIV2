@@ -119,7 +119,7 @@ $primary: #9161cf;
       font-weight: bold;
       font-size: 0.9em;
       background-color: $primary;
-      padding: 0.1em 0.4em;
+      padding: 0.1em 0.5em;
       border-radius: $border-radius;
     }
   }
