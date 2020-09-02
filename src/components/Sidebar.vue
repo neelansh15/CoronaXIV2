@@ -37,8 +37,17 @@
         </div>
 
         <div style="padding: 0.5em 0">
-          <b>Date range:</b>
-          <v-date-picker mode="range" :value="null" color="purple" is-dark is-inline />
+          <div class="filter">
+            <b>Date range:</b>
+            <button class="button" @click="() => dateRange = null">Clear</button>
+          </div>
+          <!-- {{ (finalDateRange) ? finalDateRange.start: null }}
+          <br />
+          {{ (finalDateRange) ? finalDateRange.end : null }} -->
+          {{ filters }} <br />
+          {{ finalDateRange }}
+          <br />
+          <v-date-picker mode="range" color="purple" v-model="dateRange" is-dark is-inline />
         </div>
       </div>
     </div>
@@ -48,9 +57,27 @@
 <script>
 export default {
   name: "Sidebar",
+  data(){
+      return{
+          dateRange: null
+      }
+  },
   computed: {
     filters() {
       return this.$store.getters.filters;
+    },
+    finalDateRange() {
+      if (this.dateRange) {
+        let final = {
+          start: this.convertDate(this.dateRange.start),
+          end: this.convertDate(this.dateRange.end),
+        };
+        this.$store.commit("updateDateRange", final);
+        return final;
+      } else {
+        this.$store.commit("updateDateRange", null);
+        return null;
+      }
     },
   },
   methods: {
@@ -64,6 +91,18 @@ export default {
     },
     updateFilterState() {
       this.$store.dispatch("updateFilterState", this.filters);
+    },
+    convertDate(date) {
+      let day = date.getDate();
+      if (day < 10) {
+        day = "0" + day;
+      }
+      let month = date.getMonth() + 1;
+      if (month < 10) {
+        month = "0" + month;
+      }
+      let year = date.getFullYear();
+      return year + "-" + month + "-" + day;
     },
   },
 };
@@ -115,6 +154,19 @@ $primary: #9161cf;
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+}
+
+.button {
+  border-radius: $border-radius;
+  padding: 0.5em 0.8em;
+  background: $primary;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+
+  &:focus {
+    outline: none !important;
   }
 }
 

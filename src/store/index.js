@@ -8,7 +8,8 @@ export default new Vuex.Store({
     getURL: "https://corona-xiv.herokuapp.com/?title=",
     filters:{
       peerReviewed: false,
-      onlyCovid: false
+      onlyCovid: false,
+      dateRange: null
     },
     count: 0
   },
@@ -23,6 +24,9 @@ export default new Vuex.Store({
   mutations: {
     updateFilterState(state, payload){
       state.filters = payload
+    },
+    updateDateRange(state, payload){
+      state.filters.dateRange = payload
     },
     incrementCount(state){
       state.count = state.count + 1
